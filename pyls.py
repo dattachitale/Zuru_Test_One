@@ -102,7 +102,7 @@ def main_function(list_format=False, all_files=False, reverse=False, time_modify
         elif list_format and filter==None and human==None:      # If just -l flag is given by user e.g. pyls -l
             detail_directoryinfo()
         elif list_format and isinstance(human,str):         # If user uses -l with -H command and file/dir name
-            print("Please only use -H command (not -l) and file/dir name which will give you size parameter of your file/dir ")
+            print("Please only use -H(caps lock) command (not -l) and file/dir name which will give you size parameter of your file/dir ")
         else:
             # If user misplace or swap the flag just in case this is specially in --filter case
             print("invalid command, or you may have swapped or missed any flag, check the help using -h or --h flag")
