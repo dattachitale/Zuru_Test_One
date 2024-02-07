@@ -26,6 +26,55 @@ import time
 import os
 
 
+# Declared "format_time","print_dict_info" and "format_size" functions at global level as we need to call them multiple times
+def format_time(time_modified):
+    """
+    This function will convert date time in human-readable format and return it.
+
+    Args:
+    - time_modified: The varibale to be converted to human-readable format.
+
+    Returns:
+    - string: representing the time in the specified format.
+    """
+    return time.strftime('%b %d %H:%M', time.localtime(time_modified))
+
+
+def print_dict_info(file_info):
+    """
+    This function is to format the output in a desire way.
+
+    Args:
+    - file_info: Dictionary values to format in specified ways.
+
+    Returns:
+     None
+    """
+    permissions = file_info['permissions']
+    size = file_info['size']
+    time_modified = format_time(file_info['time_modified'])
+    name = file_info['name']
+    print(f"{permissions}       {size}      {time_modified}         {name}")
+
+
+def format_size(size):
+    """
+    This function converts file size from bytes to a human-readable format.
+
+    Args:
+    - size: The size varibale to be converted to human-readable format.
+
+    Returns:
+    - float: representing the size in the specified format.
+    """
+    suffixes = ['B', 'KB', 'MB', 'GB', 'TB']
+    index = 0
+    while size >= 1024 and index < len(suffixes) - 1:
+        size /= 1024.0
+        index += 1
+    return f"{size:.1f} {suffixes[index]}"
+
+
 def main_function(list_format=False, all_files=False, reverse=False, time_modify=False, filter=False, human=False):
     """
 
@@ -104,6 +153,242 @@ def all_directory():
         parsed_data = json.load(file_data)
         for names in parsed_data['contents']:
             print(names['name'], end="\t\t")
+
+
+def detail_directoryinfo():
+    """
+
+    This function will display all the top direcotries with additional information.
+
+    Args:
+    None
+
+    Returns:
+    None
+    """
+    print("This is detail directory information with additional information \n")
+    # first open the file in read mode to read and load json data
+    with open("structure.json", 'r') as file_data:
+        parsed_data = json.load(file_data)
+
+        def traverse_directory(directory):
+            # Traverse directory and print file information
+            for item in directory:
+                if item['name'] == '.gitignore':
+                    continue
+                if 'contents' in item:
+                    print_dict_info(item)
+                else:
+                    print_dict_info(item)
+
+        # Traverse directory and print file information
+        traverse_directory(parsed_data['contents'])
+
+
+def detail_directory_reverseinfo():
+    """
+
+    This function will display all the top direcotries with additional information in reverse order.
+
+    Args:
+    None
+
+    Returns:
+    None
+    """
+    print("This is detail directory information with additional information But in Revers order\n")
+    # first open the file in read mode to read and load json data
+    with open("structure.json", 'r') as file_data:
+        parsed_data = json.load(file_data)
+
+        def traverse_directory(directory):
+            directory.reverse()
+
+            # Traverse directory and print file information (by calling print_dict_info function)
+            for item in directory:
+                if item['name'] == '.gitignore':
+                    continue
+                if 'contents' in item:
+                    print_dict_info(item)
+                else:
+                    print_dict_info(item)
+
+        # Traverse directory and print file information
+        traverse_directory(parsed_data['contents'])
+
+
+def sort_on_time_modified():
+    """
+
+    This function will sort the files/directories on time_modify attribute.
+
+    Args:
+    None
+
+    Returns:
+    None
+    """
+    print("This is detail directory information with sort based on time_modified flag in reverse\n")
+    # first open the file in read mode to read and load json data
+    with open("structure.json", 'r') as file_data:
+        parsed_data = json.load(file_data)
+
+    parsed_data['contents'] = sorted(parsed_data['contents'], key=lambda x: x['time_modified'], reverse=True)
+
+    # Print file information in the desired format
+    for item in parsed_data['contents']:
+        print_dict_info(item)
+
+
+def search_on_filter_wth_args(filter, time_modify=False, reverse=False):
+    """
+
+    This function will filter the files or directory on the name provided by user along with -r and -t flag.
+
+    Args:
+    - filter (String): --filter=dir/file where dir or file provided by the user on which filter has to apply.
+    - time_modify (bool): -t flag where dir or file content is print based on time modified flag
+    - reverse (bool): -r flag where dir or file content is print based on reverse
+
+    Returns:
+    None
+    """
+    print("This is search result of a dir/file on specific filter options - file/dir \n")
+    # first open the file in read mode to read and load json data
+    with open('structure.json', 'r') as file_data:
+        directory = json.load(file_data)
+
+    def print_file_info(file_info, full_path):
+        # Print file information in the desired format
+        permissions = file_info['permissions']
+        size = format_size(file_info['size'])
+        time_modified = format_time(file_info['time_modified'])
+        print(f"{permissions} {size} {time_modified} {full_path}")
+
+    def search_directory(directory, filter, time_modify=False, reverse=False):
+        if time_modify:
+            directory['contents'] = sorted(directory['contents'], key=lambda x: x['time_modified'], reverse=reverse)
+        for item in directory['contents']:
+            if item['name'] != '.gitignore':    # Exclude ".gitignore" from the output
+                if filter == 'dir' and item['permissions'].startswith('d'):
+                    print_file_info(item, item['name'])
+                elif filter == 'file' and not item['permissions'].startswith('d'):
+                    print_file_info(item, item['name'])
+                elif filter == 'all':
+                    print_file_info(item, item['name'])
+
+    # Sort the directory by time modified (an oldest first) and reverse the order
+    search_directory(directory, filter, time_modify, reverse)
+
+
+def handle_path(path):
+    """
+
+    This function will handle path and print the file/dir (pass by user) and print it's subdirs or dir itself.
+
+    Args:
+    - path: String path variable which is either dir name or full path of a file
+
+    Returns:
+    None
+    """
+    print("This handles a path of a file or directory also \n")
+    # first open the file in read mode to read and load json data
+    with open("structure.json", 'r') as file_data:
+        parsed_data = json.load(file_data)
+
+    def print_file_info(file_info, full_path):
+        # Print file information in the desired format
+        permissions = file_info['permissions']
+        size = file_info['size']
+        time_modified = format_time(file_info['time_modified'])
+        print(f"{permissions} {size} {time_modified} {full_path}")
+
+    def search_directory(directory, search_query, current_path=''):
+        found = False
+        # Check if the search query matches any directory name
+        for item in directory:
+            if item['name'] == search_query:
+                found = True
+                if 'contents' in item:
+                    for sub_item in item['contents']:
+                        print_file_info(sub_item, os.path.join(current_path, sub_item['name']))
+                break
+        # If the search query contains a path, check if it matches any file within a directory
+        if '/' in search_query:
+            directory_name, file_name = search_query.split('/', 1)
+            for item in directory:
+                if item['name'] == directory_name and 'contents' in item:
+                    for sub_item in item['contents']:
+                        if sub_item['name'] == file_name:
+                            found = True
+                            print_file_info(sub_item, os.path.join(current_path, search_query))
+                            break
+        # If no matching directory or file found, display an error message
+        if not found:
+            print(f"error: cannot access '{search_query}': No such file or directory")
+
+    search_query = path
+
+    # Search for the specific file or directory
+    search_directory(parsed_data['contents'], search_query)
+
+
+def human_readable_size(path):
+    """
+
+    This function will print the 'size' parameter in human-readable format of a file or dir provided by the user.
+
+    Args:
+    - path: String path variable which is either dir name or full path of a file
+
+    Returns:
+    None
+    """
+    print("This is human readable function where Size parameter is human readable \n")
+    # first open the file in read mode to read and load json data
+    with open("structure.json", 'r') as file_data:
+        parsed_data = json.load(file_data)
+
+    def print_file_info(file_info, full_path):
+        # Print file information in the desired format
+        permissions = file_info['permissions']
+        size = format_size(file_info['size'])
+        time_modified = format_time(file_info['time_modified'])
+        print(f"{permissions} {size} {time_modified} {full_path}")
+
+    def search_directory(directory, search_query, current_path=''):
+        found = False
+
+        # Check if the search query matches any directory name
+        for item in directory:
+            if item['name'] == search_query:
+                found = True
+                if 'contents' in item:
+                    for sub_item in item['contents']:
+                        print_file_info(sub_item, os.path.join(current_path, sub_item['name']))
+                break
+
+        # If the search query contains a path, check if it matches any file within a directory
+        if '/' in search_query:
+            directory_name, file_name = search_query.split('/', 1)
+            for item in directory:
+                if item['name'] == directory_name and 'contents' in item:
+                    for sub_item in item['contents']:
+                        if sub_item['name'] == file_name:
+                            found = True
+                            print_file_info(sub_item, os.path.join(current_path, search_query))
+                            break
+
+        # If no matching directory or file found, display an error message
+        if not found:
+            print(f"error: cannot access '{search_query}': No such file or directory")
+
+    # Input search query
+    search_query = path
+
+    # Search for the specific file or directory
+    search_directory(parsed_data['contents'], search_query)
 
 
 if __name__ == "__main__":
