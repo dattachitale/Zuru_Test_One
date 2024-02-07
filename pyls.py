@@ -26,6 +26,85 @@ import time
 import os
 
 
+def main_function(list_format=False, all_files=False, reverse=False, time_modify=False, filter=False, human=False):
+    """
+
+    This is a main function where it decides which function to call depending on the filter used by user.
+
+    Args:
+    - list_format (bool/string): -l flag if provied by user, it will be False by default.
+    - all_files (bool): -A flag if provied by user, it will be False by default.
+    - reverse (bool): -r flag if provied by user, it will be False by default.
+    - time_modify (bool): -t flag if provied by user, it will be False by default.
+    - filter (None Type/string): -filter flag if provied by user, it will be False by default.
+
+    Returns:
+    None
+    """
+    if list_format:
+        if list_format and time_modify and reverse and filter==None:    # If -l -r -t flags are given by user
+            sort_on_time_modified()
+        elif list_format and reverse and filter==None:      # If -l -r flags are given by user
+            detail_directory_reverseinfo()
+        elif list_format and time_modify and isinstance(list_format,str) or reverse:    # If -l -r -t and --filter flags are given by user
+            search_on_filter_wth_args(filter, time_modify, reverse)
+        elif isinstance(list_format,str):       # If -l and file/dir name are given by user
+            handle_path(list_format)
+        elif list_format and filter==None and human==None:      # If just -l flag is given by user e.g. pyls -l
+            detail_directoryinfo()
+        elif list_format and isinstance(human,str):         # If user uses -l with -H command and file/dir name
+            print("Please only use -H command (not -l) and file/dir name which will give you size parameter of your file/dir ")
+        else:
+            # If user misplace or swap the flag just in case this is specially in --filter case
+            print("invalid command, or you may have swapped or missed any flag, check the help using -h or --h flag")
+    elif all_files:       # If just -A flag is given by user e.g. pyls -A
+        all_directory()
+    elif isinstance(human,str):       # If -H human-readable flag is given by user with file/dir name e.g. pyls -H parser
+        human_readable_size(human)
+    else:
+        # If user misplace or swap the flag just in case this
+        print("invalid command, or you may have swapped or missed any flag, check the help using -h or --h flag")
+
+
+def top_directory():
+    """
+
+    This function will print all top level directory excluding '.gitignore'.
+
+    Args:
+    None
+
+    Returns:
+    None
+    """
+    print("This is top directory excluding '.gitignore' \n")
+    # First open the file in read mode to read and load json data
+    with open("structure.json", 'r') as file_data:
+        parsed_data = json.load(file_data)
+        for names in parsed_data['contents']:
+            if names['name'].startswith("."):
+                continue
+            print(names['name'], end="\t\t")
+
+
+def all_directory():
+    """
+
+    This function will print all top directory including '.gitignore'.
+
+    Args:
+    None
+
+    Returns:
+    None
+    """
+    print("This is top directory including '.gitignore' \n")
+    # first open the file in read mode to read and load json data
+    with open("structure.json", 'r') as file_data:
+        parsed_data = json.load(file_data)
+        for names in parsed_data['contents']:
+            print(names['name'], end="\t\t")
+
 
 if __name__ == "__main__":
     # This is a code block that runs when the script is executed as the main program
