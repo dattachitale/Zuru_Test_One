@@ -50,7 +50,7 @@ if __name__ == "__main__":
         main_function(list_format=args.list, all_files=args.all, reverse=args.reverse, time_modify=args.time_modify, filter=args.filter, human=args.human)
     else:
         # If no flags have provided my user means only file name "pyls" so call function which displays top level directory only
-        top_directory()
+        top_directory() 
 
 
 
