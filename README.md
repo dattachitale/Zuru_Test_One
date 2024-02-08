@@ -12,6 +12,7 @@ LICENSE         README.md           ast go.mod          lexer           main.go 
 - [Installation](#installation)
 - [Usage](#usage) - Commands
 - [Functions](#functions)
+- [Test Functions -Pytes](#functions)
 
 
 ## Installation
@@ -156,3 +157,16 @@ This checks which all flags are set to true and calls decision_function() or top
 #### print_dict_info(): This function is to format the output in a desire way.
 
 #### format_size(): This function converts file size from bytes to a human-readable format.
+
+
+## Test Functions -Pytes: There is s seperate folder "Test" for Unit testing which has few file to test the code
+
+### Test Functions: 
+#### test_all_directory.py
+#### test_format_size.py
+#### test_format_time.py
+#### test_handle_path.py
+#### test_main_function.py
+#### test_print_dict_info.py
+#### test_search_on_filter_wth_args.py
+#### test_top_directory.py
