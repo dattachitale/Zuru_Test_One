@@ -1,5 +1,6 @@
 # Zuru_Maya_Project
-This includes Maya related assignments. As I do not have maya installed so I have just written python code in two different py files. (Als0 could not test the code)
+This includes Maya related assignments. As I do not have maya installed so I have just written python code in two different py files. (Also could not test)
+
 maya_qt.py - this includes first assignment related to Maya QT
 maya_om_program.py - this includes the code for OM and Commands assignment - 3 assignments
 
