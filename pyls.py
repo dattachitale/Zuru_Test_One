@@ -433,7 +433,11 @@ def main_function():
         top_directory()
 
 
+
 if __name__ == "__main__":
+    """
+    This is the starting or entry point of the program
+    """
     main_function()
 
 
