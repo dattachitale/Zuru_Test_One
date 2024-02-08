@@ -28,14 +28,19 @@ cmds.file(new=True, force=True)
 # Create a cube
 cube = cmds.polyCube()[0]
 
+# Add an attribute "Show Duplicate" as boolean
 cmds.addAttr(cube, longName="ShowDuplicate", attributeType="bool")
 
+# Duplicate the cube and parent it under the original
 cubeB = cmds.duplicate(cube, name="CubeB")[0]
 
+# Rename it "CubeB
 cmds.rename(cubeB, "CubeB")
 
+# Move the CubeB, 10 on X
 cmds.move(10, 0, 0, cubeB, relative=True)
 
+# Add an attribute called "Duplicate" of type boolean
 cmds.addAttr(cubeB, longName="Duplicate", attributeType="bool")
 
 # Connect the "Show Duplicate" attribute to drive the visibility of CubeB, and the attribute "Duplicate"
@@ -50,7 +55,7 @@ cmds.select(geometry + ".f[0]")
 cmds.delete()
 
 # Save the scene
-cmds.file(rename="path to save scene.ma")
+cmds.file(rename="c:/scene.ma")
 cmds.file(save=True, type="mayaAscii")
 
 ######################################################################################################################################
