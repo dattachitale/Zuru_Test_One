@@ -130,29 +130,29 @@ options:
 
 
 ## Functions
-### if __name__ == "__main__":  entry point of a program
+#### if __name__ == "__main__":  entry point of a program
 
-### main_function(): This function is for adding new command arguments to argparser class. 
+#### main_function(): This function is for adding new command arguments to argparser class. 
 This checks which all flags are set to true and calls decision_function() or top_directory() accordingly
 
-### decision_function(): This is a decision function where it decides which function to call depending on the filter used by user
+#### decision_function(): This is a decision function where it decides which function to call depending on the filter used by user
 
-### top_directory(): This function will print all top level directory excluding '.gitignore'.
+#### top_directory(): This function will print all top level directory excluding '.gitignore'.
 
-### detail_directoryinfo(): This function will display all the top direcotries with additional information.
+#### detail_directoryinfo(): This function will display all the top direcotries with additional information.
 
-### detail_directory_reverseinfo(): This function will display all the top direcotries with additional information in reverse order.
+#### detail_directory_reverseinfo(): This function will display all the top direcotries with additional information in reverse order.
 
-### sort_on_time_modified(): This function will sort the files/directories on time_modify attribute.
+#### sort_on_time_modified(): This function will sort the files/directories on time_modify attribute.
 
-### search_on_filter_wth_args(): This function will filter the files or directory on the name provided by user along with -r and -t flag.
+#### search_on_filter_wth_args(): This function will filter the files or directory on the name provided by user along with -r and -t flag.
 
-### handle_path(): This function will handle path and print the file/dir (pass by user) and print it's subdirs or dir itself.
+#### handle_path(): This function will handle path and print the file/dir (pass by user) and print it's subdirs or dir itself.
 
-### human_readable_size(): This function will print the 'size' parameter in human-readable format of a file or dir provided by the user.
+#### human_readable_size(): This function will print the 'size' parameter in human-readable format of a file or dir provided by the user.
 
-### format_time(): This function will convert date time in human-readable format and return it.
+#### format_time(): This function will convert date time in human-readable format and return it.
 
-### print_dict_info(): This function is to format the output in a desire way.
+#### print_dict_info(): This function is to format the output in a desire way.
 
-### format_size(): This function converts file size from bytes to a human-readable format.
+#### format_size(): This function converts file size from bytes to a human-readable format.
