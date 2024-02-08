@@ -1,6 +1,5 @@
 from pyls import handle_path
 
-
 def testhandle_path_existing_file(capsys):
     handle_path("parser/parser.go")
 

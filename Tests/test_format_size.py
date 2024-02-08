@@ -1,4 +1,5 @@
 from pyls import format_size
+
 def testformat_size():
     # Assert and validate
     assert format_size(0) == "0.0 B"                    # Edge case: zero size

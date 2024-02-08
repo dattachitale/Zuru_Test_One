@@ -1,7 +1,6 @@
 from pyls import all_directory
 
 
-
 def testall_directory(capsys):
     all_directory()
     captured = capsys.readouterr()

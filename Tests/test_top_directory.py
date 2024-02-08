@@ -1,7 +1,6 @@
 from pyls import top_directory
 
 
-
 def testtop_directory(capsys):
     top_directory()
     captured = capsys.readouterr()
